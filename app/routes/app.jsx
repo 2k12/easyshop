@@ -10,7 +10,7 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
-
+        
   return json({ apiKey: process.env.SHOPIFY_API_KEY || "" });
 };
 
@@ -28,13 +28,7 @@ export default function App() {
 
       </ui-nav-menu>
       <Outlet />
-      {/* <ui-nav-menu>
-        <Link to="/app" rel="home">
-          Home
-        </Link>
-        <Link to="/app/product">Configuraciones</Link>
-      </ui-nav-menu>
-      <Outlet /> */}
+
     </AppProvider>
   );
 }
@@ -48,19 +42,3 @@ export const headers = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
 
-
-
-// export const fetchDataFromAPI=async (endpoint) =>{
-//   try {
-//     const response = await fetch(endpoint);
-
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     throw new Error(`There was a problem fetching data: ${error.message}`);
-//   }
-// }

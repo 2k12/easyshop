@@ -14,57 +14,39 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
+import logoeasy from "../assets/logo.png";
+import { FaCheckCircle } from 'react-icons/fa';
 
 export const loader = async ({ request }) => {
+  const url = new URL(request.url);
+
+  const shop = url.searchParams.get("shop");
+  console.log("el valor de shop es;", shop)
+  const accestoken = url.searchParams.get("accessToken");
+  console.log("el valor de accestoken es:", accestoken)
+
+
+
+
   await authenticate.admin(request);
 
   return null;
 };
-// let m= process.env.SHOPIFY_API_KEY;
-// let n=process.env.SHOPIFY_API_SECRET;
-// let o=process.env.SHOPIFY_APP_URL
+let m = process.env.SHOPIFY_API_KEY;
+let n = process.env.SHOPIFY_API_SECRET;
+let o = process.env.SHOP_CUSTOM_DOMAIN;
 export const action = async ({ request }) => {
 
-   //console.log("requestffffrfrfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+  //console.log("requestffffrfrfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
   //console.log(request)
 
 
   const { admin } = await authenticate.admin(request);
+  //const { code } = await authenticate.admin(request);
+  console.log("este es el codeggggggggggggggggggggggggggg");
   const color = ["Red", "Orange", "Yellow", "Green"][
     Math.floor(Math.random() * 4)
   ];
-  const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($input: ProductInput!) {
-        productCreate(input: $input) {
-          product {
-            id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          title: `${color} Tabla de cocina`,
-          variants: [{ price: Math.random() * 100 }],
-        },
-      },
-    }
-  );
-  const responseJson = await response.json();
 
   return json({
     product: responseJson.data.productCreate.product,
@@ -94,48 +76,59 @@ export default function Index() {
   };
   return (
     <Page>
-      <ui-title-bar title="Remix app template">
+      <img src={logoeasy} style={{ paddingBottom: '6px', marginBottom: '60px' }} alt="Post" />
+      {/* <ui-title-bar title="Remix app template">
         <button variant="primary" onClick={generateProduct}>
           Crear un nuevo producto
         </button>
-      </ui-title-bar>
-      <BlockStack gap="500">
-        <Layout>
-          <Layout.Section>
-            <Card>
-              <BlockStack gap="500">
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    Esta es la app oficial de easyecommerce 🎉
-             
-             
-                  </Text>
-                  <Text variant="bodyMd" as="p">
-                    Porfavor completa el proceso de validacion de la aplicación{" "}
-                    <Link
-                      url="https://shopify.dev/docs/apps/tools/app-bridge"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      App Bridge
-                    </Link>{" "}
-                    interface examples like an{" "}
-                    <Link url="/app/product" removeUnderline>
-                      additional page in the app nav
-                    </Link>
-                    , as well as an{" "}
-                    <Link
-                      url="https://shopify.dev/docs/api/admin-graphql"
-                      target="_blank"
-                      removeUnderline
-                    >
-                      Admin GraphQL
-                    </Link>{" "}
-                    mutation demo, to provide a starting point for app
-                    development.
-                  </Text>
+      </ui-title-bar> */}
+      <BlockStack gap="600" >
+        <BlockStack gap="200">
+
+          <Layout>
+            <Layout.Section>
+              <Card >
+                <BlockStack gap="200" style={{ paddingBottom: '20px' }}>
+                  <Text as="h1" variant="headingMd">INSTRUCCIONES DE CONFIGURACIÓN</Text>
                 </BlockStack>
                 <BlockStack gap="200">
+                  <List >
+                    <List.Item>
+                      <FaCheckCircle /> En tu cuenta EasyEcommerce, ubica la opción "Mis Integraciones"
+                    </List.Item>
+                    <List.Item>
+                      <FaCheckCircle /> Accede al apartado de generación de Tokens y genera un nuevo Token
+                    </List.Item>
+                    <List.Item>
+                      <FaCheckCircle /> En la plataforma Shopify, ve a la pestaña <Link url="https://megastoreecuador.myshopify.com/admin/apps/easyshop-4/app/config"
+                        target="_blank"
+                        removeUnderline>Configuraciones</Link>
+                    </List.Item>
+                    <List.Item>
+                      <FaCheckCircle /> Ingresa el Nombre de tu tienda y el token previamente
+                    </List.Item>
+                  </List>
+                </BlockStack>
+
+              </Card>
+
+            </Layout.Section>
+            <Layout.Section>
+              <Card>
+                <BlockStack gap="500">
+                  <BlockStack gap="200">
+                    <Text as="h2" variant="headingMd">
+                      Conoce mas sobre Easyshop
+                      {/* {m} */}
+                      {/* {o} */}
+
+                    </Text>
+                    <Text as="p" variant="bodyMd" style={{ textAlign: 'justify' }}>
+
+                      Easy Shop es una aplicación intuitiva de Shopify diseñada para simplificar la gestión de pedidos, proporcionando a los negocios una plataforma unificada para el seguimiento y control eficiente de cada venta. Su interfaz amigable permite una rápida adaptación y uso, asegurando que los comerciantes puedan monitorizar el estado de los pedidos en tiempo real. Con funcionalidades robustas para la organización de pedidos, Easy Shop aumenta la productividad al automatizar tareas repetitivas, reduce errores humanos y mejora la satisfacción del cliente al acelerar los tiempos de procesamiento. Esta herramienta es esencial para cualquier comerciante de Shopify que busque optimizar sus operaciones de venta en línea.
+                    </Text>
+                  </BlockStack>
+                  {/* <BlockStack gap="200">
                   <Text as="h3" variant="headingMd">
                     Get started with products
                   </Text>
@@ -151,8 +144,8 @@ export default function Index() {
                     </Link>{" "}
                     mutation in our API references.
                   </Text>
-                </BlockStack>
-                <InlineStack gap="300">
+                </BlockStack> */}
+                  {/* <InlineStack gap="300">
                   <Button loading={isLoading} onClick={generateProduct}>
                     Generate a product
                   </Button>
@@ -165,8 +158,8 @@ export default function Index() {
                       View product
                     </Button>
                   )}
-                </InlineStack>
-                {actionData?.product && (
+                </InlineStack> */}
+                  {/* {actionData?.product && (
                   <Box
                     padding="400"
                     background="bg-surface-active"
@@ -179,80 +172,50 @@ export default function Index() {
                       <code>{JSON.stringify(actionData.product, null, 2)}</code>
                     </pre>
                   </Box>
-                )}
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneThird">
-            <BlockStack gap="500">
-              <Card>
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    App template specs
-                  </Text>
-                  <BlockStack gap="200">
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Framework
-                      </Text>
-                      <Link
-                        url="https://remix.run"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        Remix
-                      </Link>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Database
-                      </Text>
-                      <Link
-                        url="https://www.prisma.io/"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        Prisma
-                      </Link>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        Interface
-                      </Text>
-                      <span>
-                        <Link
-                          url="https://polaris.shopify.com"
-                          target="_blank"
-                          removeUnderline
-                        >
-                          Polaris
-                        </Link>
-                        {", "}
-                        <Link
-                          url="https://shopify.dev/docs/apps/tools/app-bridge"
-                          target="_blank"
-                          removeUnderline
-                        >
-                          App Bridge
-                        </Link>
-                      </span>
-                    </InlineStack>
-                    <InlineStack align="space-between">
-                      <Text as="span" variant="bodyMd">
-                        API
-                      </Text>
-                      <Link
-                        url="https://shopify.dev/docs/api/admin-graphql"
-                        target="_blank"
-                        removeUnderline
-                      >
-                        GraphQL API
-                      </Link>
-                    </InlineStack>
-                  </BlockStack>
+                )} */}
                 </BlockStack>
               </Card>
-              <Card>
+            </Layout.Section>
+            <Layout.Section variant="oneThird">
+              <BlockStack gap="500">
+                <Card>
+                  <Text as="h2" variant="headingMd">
+                    Ventajas de Easyshop
+                  </Text>
+                  <BlockStack gap="200">
+                    <List>
+                      <List.Item>
+                        Automatización
+
+                      </List.Item>
+                      <List.Item>
+                        Personalización
+
+                      </List.Item>
+                      <List.Item>
+                        Mejora de la Satisfacción del Cliente
+
+                      </List.Item>
+                      <List.Item>
+                        Integración de Terceros
+                      </List.Item>
+                      <List.Item>
+                        Eficiencia Operativa
+                      </List.Item>
+                      <List.Item>
+                        Gestión Centralizada
+                      </List.Item>
+                      <List.Item>
+                        Escalabilidad
+                      </List.Item>
+
+
+
+
+                    </List>
+                  </BlockStack>
+                </Card>
+                {/* <Card>
                 <BlockStack gap="200">
                   <Text as="h2" variant="headingMd">
                     Next steps
@@ -282,10 +245,11 @@ export default function Index() {
                     </List.Item>
                   </List>
                 </BlockStack>
-              </Card>
-            </BlockStack>
-          </Layout.Section>
-        </Layout>
+              </Card> */}
+              </BlockStack>
+            </Layout.Section>
+          </Layout>
+        </BlockStack>
       </BlockStack>
     </Page>
   );

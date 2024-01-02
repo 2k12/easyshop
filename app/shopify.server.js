@@ -10,6 +10,7 @@ import { restResources } from "@shopify/shopify-api/rest/admin/2023-10";
 import prisma from "./db.server";
 
 const shopify = shopifyApp({
+  
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
   apiVersion: LATEST_API_VERSION,
@@ -40,6 +41,35 @@ const shopify = shopifyApp({
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),
 });
+
+// export async function createToken(token,nombreTienda){
+//   try {
+//     // Ejemplo: Crear un token de prueba
+//     const nuevoToken = await prisma.token.create({
+//       data: {
+//         token: 'valor_del_token_de_prueba',
+//         nombreTienda: 'nombre_de_la_tienda_de_prueba'
+//       }
+//     });
+//     console.log('Token de prueba creado:', nuevoToken);
+//   } catch (error) {
+//     console.error('Error al crear datos de prueba:', error);
+//   }
+// }
+
+// export const consultarTokens = async () => {
+//   try {
+//     const tokens = await prisma.token.findMany();
+//     console.log('Tokens consultados:');
+   
+//       console.log(token); // Muestra cada token en el console.log
+    
+//     return tokens;
+//   } catch (error) {
+//     console.error('Error al consultar los tokens:', error);
+//     throw error;
+//   }
+// };
 
 export default shopify;
 export const apiVersion = LATEST_API_VERSION;
