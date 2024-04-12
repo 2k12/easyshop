@@ -1,0 +1,9 @@
+[debug] [2024-01-23T21:37:34.546Z] ----------------------------------------------------------------------
+[debug] [2024-01-23T21:37:34.547Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\User\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2024-01-23T21:37:34.548Z] CLI Version:   12.4.7
+[debug] [2024-01-23T21:37:34.548Z] Platform:      win32
+[debug] [2024-01-23T21:37:34.548Z] Node Version:  v18.16.1
+[debug] [2024-01-23T21:37:34.549Z] Time:          Tue Jan 23 2024 16:37:34 GMT-0500 (hora estándar de Colombia)
+[debug] [2024-01-23T21:37:34.549Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-01-23T21:37:34.552Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
